@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment-test
+  labels:
+    track: canary
+spec:
+  selector:
+    matchLabels:
+      any-name: my-app
+  template:
+    metadata:
+      labels:
+        any-name: my-app
+    spec:
+      containers:
+        - name: cont1
+          image: learnk8s/app:1.0.0
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            failureThreshold: 3
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1
+          readinessProbe:
+            failureThreshold: 3
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            successThreshold: 1

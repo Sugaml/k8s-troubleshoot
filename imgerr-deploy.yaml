@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app1
+  labels:
+    track: canary
+spec:
+  selector:
+    matchLabels:
+      any-name: my-app
+  template:
+    metadata:
+      labels:
+        any-name: my-app
+    spec:
+      containers:
+        - name: cont1
+          image: learnk8ss/app:1.0.0
+          ports:
+            - containerPort: 8080
