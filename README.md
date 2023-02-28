@@ -1,4 +1,4 @@
-# k8s-troubleshoot
+# Kubernetes Troubleshooting
 
 ## Inroduction
 
