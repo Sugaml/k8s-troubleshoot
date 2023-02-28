@@ -4,25 +4,72 @@
 
 Kubernetes troubleshooting is the process of identifying, diagnosing, and resolving issues in kubernetes cluster, nodes, pods, or containers.
 
+## Kubernetes Cluster Architecture
+ ![Kubernetes Architectur](/image/architecture.png) 
+
+Each Kubernetes cluster is composed of:
+
+1. **Nodes**
+    
+    Represent a physical or virtual machine with the container runtime to support one or more containers. Nodes in an operating cluster can be categorized into:
+    * **Master node**
+
+      Hosts the cluster’s control plane and is responsible for scheduling workloads, scaling, and managing the cluster state. Each cluster must have at least one master node; however, a typical choice is to provision two or more master nodes for redundancy.
+          
+    * **Worker node**
+    
+      Hosts workloads in containers and performs the duties assigned to it by the master node.‍
+
+2. **Control plane**
+
+    Composed of a number of cluster components, it’s responsible for controlling the cluster to achieve a desired state.‍
+
+3. **Kube-API server**
+
+    The front-end server that manages all external communication with the cluster.‍
+
+4. **Etcd**
+
+    The key value database that stores cluster state and data.‍
+
+5. **Kube-scheduler**
+
+    Uses etcd event data to schedule workloads on worker nodes.‍
+
+6. **Kube-controller manager**
+
+    Runs a set of controllers that govern the state of the cluster‍
+
+7. **Kubelet** 
+
+    An agent that runs on each worker node to communicate with the API server, it’s responsible for the deployment of containerized workloads in pods.‍
+
+8. **Kube-proxy**
+
+    Maintains network rules that allow communication between pods and services, both internal and external to the cluster.
+
 ## Get Started
 
-## Install Kind Cluster
+## Install ```Kind```
 
- -curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.1/kind-linux-amd64
- - chmod +x ./kind
- - mv ./kind /usr/local/bin
- - which kind
- - kind version 
+  ```
+  curl -Lo ./kind https://kind.sigs.k8s.io/dl/v0.11.1/kind-linux-amd64
+  chmod +x ./kind
+  mv ./kind /usr/local/bin
+  which kind
+  kind version
+  ```
 
 
 ## Install ``kubectl``
- - curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
- ```
+ 
+```
+ curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
  chmod +x kubectl
  mv ./kubectl /usr/local/bin/kubectl
  kubectl version --client
 ```
-## Create Kind Cluster
+## Create ```Kind Cluster```
  ```
  kind create cluster
  ```
