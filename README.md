@@ -5,7 +5,7 @@
 Kubernetes troubleshooting is the process of identifying, diagnosing, and resolving issues in kubernetes cluster, nodes, pods, or containers.
 
 ## Kubernetes Cluster Architecture
- ![Kubernetes Architectur](/image/architecture.png) 
+ ![Kubernetes Architecture](./image/architecture.png) 
 
 Each Kubernetes cluster is composed of:
 
