@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
         - name: cont1
-          image: learnk8ss/app:1.0.0
+          image: learnk8s/app:1.0.0
           ports:
             - containerPort: 8080
