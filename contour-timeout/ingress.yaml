@@ -6,7 +6,7 @@ metadata:
     projectcontour.io/response-timeout: "10s"
 spec:
   rules:
-    - host: example.com
+    - host: babu.example.com
       http:
         paths:
           - path: /my-path
