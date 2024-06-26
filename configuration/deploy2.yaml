@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: practice-deployment
+spec:
+  replicas: 1  # Adjust as needed
+  selector:
+    matchLabels:
+      app: practice-pod2
+  template:
+    metadata:
+      labels:
+        app: practice-pod2
+    spec:
+      containers:
+        - name: practice-container
+          image: busybox
+          env:
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: practice-secret
+                  key: database_password
+          command: ["sh", "-c", "while true; do echo $DATABASE_PASSWORD; sleep 3600; done"]

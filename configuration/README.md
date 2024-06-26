@@ -72,41 +72,45 @@ Examples: Passwords, tokens, keys.
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: example-config
+  name: myconfig
 data:
   database_url: jdbc:mysql://localhost:3306/mydb
   database_user: admin
-  database_password: admin123
 
 ```
 #### Pod Manifest 
 ```bash
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: busybox-pod1
+  name: busybox-deployment
 spec:
-  containers:
-    - name: example-container
-      image: busybox
-      env:
-        - name: DATABASE_URL
-          valueFrom:
-            configMapKeyRef:
-              name: example-config
-              key: database_url
-        - name: DATABASE_USER
-          valueFrom:
-            configMapKeyRef:
-              name: example-config
-              key: database_user
-        - name: DATABASE_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: example-secret
-              key: database_password
-      command: ["sh", "-c", "while true; do echo DATABASE_URL=$DATABASE_URL; echo DATABASE_USER=$DATABASE_USER; echo DATABASE_PASSWORD=$DATABASE_PASSWORD; sleep 3600; done"]
-  restartPolicy: Always
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      containers:
+        - name: example-container
+          image: busybox
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: myconfig
+                  key: database_url
+            - name: DATABASE_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: myconfig
+                  key: database_user
+          command: ["sh", "-c", "while true; do echo DATABASE_URL=$DATABASE_URL; echo DATABASE_USER=$DATABASE_USER; echo DATABASE_PASSWORD=$DATABASE_PASSWORD; sleep 3600; done"]
+      restartPolicy: Always
+
 
 ```
 
@@ -126,22 +130,30 @@ data:
 
 #### Pod Manifest
 ```bash
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: practice-pod2
+  name: practice-deployment
 spec:
-  containers:
-    - name: practice-container
-      image: busybox
-      env:
-        - name: DATABASE_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: practice-secret
-              key: database_password
-      command: ["sh", "-c", "while true; do echo $DATABASE_PASSWORD; sleep 3600; done"]
-  restartPolicy: Never
+  replicas: 1
+  selector:
+    matchLabels:
+      app: practice-pod2
+  template:
+    metadata:
+      labels:
+        app: practice-pod2
+    spec:
+      containers:
+        - name: practice-container
+          image: busybox
+          env:
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: practice-secret
+                  key: database_password
+          command: ["sh", "-c", "while true; do echo $DATABASE_PASSWORD; sleep 3600; done"]
 ```
 
 ### Practice III
@@ -150,32 +162,41 @@ spec:
 
 #### Pod Manifest
 ```bash
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  name: combine-pod
+  name: combine-deployment
 spec:
-  containers:
-    - name: example-container
-      image: busybox
-      env:
-        - name: DATABASE_URL
-          valueFrom:
-            configMapKeyRef:
-              name: example-config
-              key: database_url
-        - name: DATABASE_USER
-          valueFrom:
-            configMapKeyRef:
-              name: example-config
-              key: database_user
-        - name: DATABASE_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: practice-secret
-              key: database_password
-      command: ["sh", "-c", "while true; do echo $DATABASE_URL && echo $DATABASE_USER && echo $DATABASE_PASSWORD; sleep 3600; done"]
-  restartPolicy: Never
+  replicas: 1
+  selector:
+    matchLabels:
+      app: combine-pod
+  template:
+    metadata:
+      labels:
+        app: combine-pod
+    spec:
+      containers:
+        - name: example-container
+          image: busybox
+          env:
+            - name: DATABASE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: myconfig
+                  key: database_url
+            - name: DATABASE_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: myconfig
+                  key: database_user
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: practice-secret
+                  key: database_password
+          command: ["sh", "-c", "while true; do echo $DATABASE_URL && echo $DATABASE_USER && echo $DATABASE_PASSWORD; sleep 3600; done"]
+
 
 ```
 

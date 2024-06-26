@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: combine-deployment
+  name: busybox-deployment
 spec:
-  replicas: 1  # Adjust as needed
+  replicas: 1
   selector:
     matchLabels:
-      app: combine-pod
+      app: busybox
   template:
     metadata:
       labels:
-        app: combine-pod
+        app: busybox
     spec:
       containers:
         - name: example-container
@@ -26,9 +26,5 @@ spec:
                 configMapKeyRef:
                   name: myconfig
                   key: database_user
-            - name: DATABASE_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: practice-secret
-                  key: database_password
-          command: ["sh", "-c", "while true; do echo $DATABASE_URL && echo $DATABASE_USER && echo $DATABASE_PASSWORD; sleep 3600; done"]
+          command: ["sh", "-c", "while true; do echo DATABASE_URL=$DATABASE_URL; echo DATABASE_USER=$DATABASE_USER; echo DATABASE_PASSWORD=$DATABASE_PASSWORD; sleep 3600; done"]
+      restartPolicy: Always
