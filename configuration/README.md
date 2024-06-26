@@ -24,6 +24,12 @@ Examples: Passwords, tokens, keys.
 
 ## Commands
 
+## Kubeconfig context
+```bash
+  export KUBECONFIG=<KUBECONFIG_FILE__PATH>
+
+```
+
 ### ConfigMap Command
 
 ##### Get Configmap
